@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>01</title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../css/reveal.css">
+  <link rel="stylesheet" href="../css/theme/yandex.css" id="theme">
+  <link rel="stylesheet" href="../lib/css/zenburn.css">
+  <link rel="stylesheet" href="../css/user.css">
+  <link rel="icon" href="../icons/favicon.png">
+  <style>
+
+  </style>
+</head>
+<body class="yandex nodejs">
+<div class="reveal">
+  <div class="slides">
+
+    <section class="large">
+      <h2>Node.js</h2>
+      <p class="author">
+        <small>Лекция 01</small>
+      </p>
+    </section>
+
+    <section>
+      <h3 class="magenta">Введение в Node.js</h3>
+    </section>
+
+    <section>
+      <h3 class="yellow">Цели</h3>
+      <ul>
+        <li class="left fragment">архитектура</li>
+        <li class="left fragment">event-driven-programming</li>
+        <li class="left fragment">non-blocking I/O</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Кроссплатформенность</h3>
+      <div class=" resources"><img src="images/linux.png"></div>
+      <div class=" resources"><img src="images/win.png"></div>
+      <div class=" resources"><img src="images/mac.png"></div>
+    </section>
+
+    <section>
+      <h3>С++</h3>
+      <table class="operations">
+        <tr><td colspan="3"><div class="center">Исходный код</div></td></tr>
+        <tr><td><div class="center">Компиляция</div></td><td><div class="center">Компиляция</div></td><td><div class="center">Компиляция</div></td></tr>
+        <tr><td><div class="center">Приложение</div></td><td><div class="center">Приложение</div></td><td><div class="center">Приложение</div></td></tr>
+        <tr><td><div class="center">Linux</div></td><td><div class="center">Windows</div></td><td><div class="center">OS X</div></td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h3>Java / С#</h3>
+      <table class="operations">
+        <tr><td colspan="3"><div class="center">Исходный код</div></td></tr>
+        <tr><td colspan="3"><div class="center">Компиляция</div></td></tr>
+        <tr><td colspan="3"><div class="center">Приложение</div></td></tr>
+        <tr><td colspan="3"><div class="center">Виртуальная машина</div></td></tr>
+        <tr><td><div class="center">Linux</div></td><td><div class="center">Windows</div></td><td><div class="center">OS X</div></td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h3>Кроссплатформенные<br>web-приложения ?</h3>
+    </section>
+
+    <section>
+      <h3>Web-приложения</h3>
+      <ul>
+        <li class="left fragment">находятся на сервере</li>
+        <li class="left fragment">backend + frontend</li>
+        <li class="left fragment"><span class="red">backend</span>-код выполняется на сервере</li>
+        <li class="left fragment"><span class="magenta">frontend</span>-код выполняется на клиенте</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Кратко</h3>
+      <ul>
+        <li class="fragment">Javascript + V8</li>
+        <li class="fragment">Асинхронный</li>
+        <li class="fragment">Однопоточный</li>
+        <li class="fragment">Событийно-ориентированный</li>
+        <li class="fragment">Не блокирующий</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Применение</h3>
+      <ul>
+        <li class="fragment">Web servers</li>
+        <li class="fragment">Command-line tools</li>
+        <li class="fragment">IoT</li>
+        <li class="fragment">Real-time applications (e.g., chat applications, gaming servers)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Одно-/мнгопоточность</h3>
+      <div class=" resources"><img src="images/s-thr.png"></div>
+      <div class=" resources"><img src="images/m-thr.png"></div>
+    </section>
+
+    <section>
+      <h3>Параллелизм/Конкурентность</h3>
+      <img class="concurr-img" src="images/concurrency.png">
+    </section>
+
+    <section>
+      <h3>Node.js - Internals</h3>
+      <img src="images/internals.png">
+    </section>
+
+    <section>
+      <h3>libuv</h3>
+      <img src="images/libuv.png">
+    </section>
+
+    <section>
+      <h3>Eventloop</h3>
+      <img src="images/eventloop.png">
+    </section>
+
+    <section>
+      <h3 class="magenta">Eventloop</h3>
+      <div class="left">
+        <pre class="javascript">
+          <code>
+    f a() { console.log(3); }
+
+    console.log(1);
+
+    setTimeout(function () {
+       console.log(2);
+    }, 3000);
+
+    a();
+
+    console.log(4);
+          </code>
+        </pre>
+      </div>
+    </section>
+
+    <section>
+      <h4>Node.js - Event Loop</h4>
+      <p>
+      <ul>
+        <li class="fragment">макро-задачи - выполняются по одной за один проход цикла</li>
+        <li class="fragment">микро-задачи - на каждом проходе цикл выполняет все накопившееся</li>
+      </ul>
+      </p>
+    </section>
+
+    <section>
+      <h4>Node.js - Event Loop</h4>
+      <p>
+      <ul>
+        <li class="fragment">макро-задачи (tasks queue): <span class="fragment">setTimeout,</span> <span class="fragment">setInterval,</span> <span class="fragment">setImmediate,</span> <span class="fragment">requestAnimationFrame,</span> <span class="fragment">I/O,</span> <span class="fragment">UI rendering</span></li>
+        <li class="fragment">микро-задачи - <span class="fragment">process.nextTick,</span> <span class="fragment">Object.observe,</span> <span class="fragment">Promises (resolved)</span></li>
+      </ul>
+      </p>
+    </section>
+
+    <section>
+      <h3>Node.js - Eventloop</h3>
+      <img src="images/eventloop-full.png">
+    </section>
+
+    <section>
+      <h3>Eventloop example #1</h3>
+      <div class="left">
+        <pre class="javascript">
+          <code>
+function fetchData(callback) {
+  setTimeout(() => {  callback('Data fetched');  }, 2000);
+}
+
+fetchData((data) => {
+  console.log(data);
+});
+          </code>
+        </pre>
+      </div>
+    </section>
+
+    <section>
+      <h3>Eventloop example #2</h3>
+      <div class="left">
+        <pre class="javascript">
+          <code>
+Promise
+.resolve()
+.then(() => console.log(1))
+.then(() => {
+  setTimeout(() => {
+    console.log(2)
+  }, 0)
+})
+.then(() => console.log(3));
+          </code>
+        </pre>
+      </div>
+    </section>
+
+    <section>
+      <h3>Q&A</h3>
+    </section>
+
+    <section>
+      <h3>Eventloop example #3</h3>
+      <div class="left">
+        <pre class="javascript">
+          <code>
+Promise
+.resolve()
+.then(() => console.log(1))
+.then(() => console.log(2))
+.then(() => console.log(3));
+
+Promise
+.resolve()
+.then(() => console.log(4))
+.then(() => console.log(5))
+.then(() => console.log(6));
+          </code>
+        </pre>
+      </div>
+    </section>
+
+    <section>
+      <h3>Async/Await</h3>
+      <div class="left">
+        <pre class="javascript">
+          <code>
+async function magic() {
+  try {
+    const files = await readDir('/tmp/images');
+
+    const archive = await zip(files);
+
+    await Promise.all([
+      sendByEmail(user.email, file),
+      sendByEmail(admin.email, file)
+    ]);
+
+    ...
+  } catch (error) {
+    ...
+  }
+}
+          </code>
+        </pre>
+      </div>
+    </section>
+
+    <section>
+      <h3>Однопоточность</h3>
+      <img src="images/singlethread.png">
+    </section>
+
+    <section>
+      <h3>Многопоточность</h3>
+      <img src="images/multithread.png">
+    </section>
+
+    <section>
+      <h3>Неблокирующий I/O</h3>
+      <img src="images/non-blockng-io.png">
+    </section>
+
+    <section>
+      <h3>Q&A</h3>
+    </section>
+
+    <section>
+      <h3 class="yellow">BONUS</h3>
+      <ul>
+        <li class="left fragment"><a href="http://bluebirdjs.com/docs/getting-started.html" target="_blank">bluebird</a></li>
+        <li class="left fragment"><a href=http://latentflip.com/loupe" target="_blank">тык</a></li>
+      </ul>
+    </section>
+  </div>
+</div>
+
+<script src="../lib/js/head.min.js"></script>
+<script src="../js/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    controls: false,
+    progress: true,
+    slideNumber: true,
+    history: true,
+    center: true,
+    hideAddressBar: true,
+    transition: 'slide',
+    dependencies: [
+      {
+        src: '../plugin/highlight/highlight.js',
+        async: true,
+        condition: function () {
+          return Boolean(document.querySelector('pre code'));
+        },
+        callback: function () {
+          hljs.initHighlightingOnLoad();
+        }
+      }
+    ]
+  });
+
+  const body = document.getElementsByClassName('yandex')[0];
+  let invert = false;
+
+  body.onkeypress = function (event) {
+    if (event.key.toLowerCase() !== 'i') return;
+
+    if (invert) body.style = '';
+    else body.style = 'filter: invert(100%)';
+
+    invert = !invert;
+  }
+</script>
+</body>
+</html>
