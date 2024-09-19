@@ -6,6 +6,7 @@
 [NODE/LECTION/5 - Asynchronous Programming and Promises](https://zemla4ok.github.io/nodejs/05)  
 [NODE/LECTION/6 - Express.js](https://zemla4ok.github.io/nodejs/06)  
 [NODE/LECTION/7 - HTTP. CORS. REST.](https://zemla4ok.github.io/nodejs/07)  
+[NODE/LECTION/8 - Аутентификация](https://zemla4ok.github.io/nodejs/08)  
  
 
 
