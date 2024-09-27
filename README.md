@@ -16,3 +16,5 @@
 [NODE/TASK/2 - node modules(http; fs)](https://zemla4ok.github.io/nodejs/tasks/2.html)  
 [NODE/TASK/3 - express.js](https://zemla4ok.github.io/nodejs/tasks/3.html)  
 [NODE/TASK/4 - auth](https://zemla4ok.github.io/nodejs/tasks/4.html)  
+[NODE/TASK/5 - sequelize](https://zemla4ok.github.io/nodejs/tasks/5.html)  
+
