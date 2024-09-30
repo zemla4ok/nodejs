@@ -8,6 +8,7 @@
 [NODE/LECTION/7 - HTTP. CORS. REST.](https://zemla4ok.github.io/nodejs/07)  
 [NODE/LECTION/8 - Аутентификация](https://zemla4ok.github.io/nodejs/08)  
 [NODE/LECTION/9 - Базы данных](https://zemla4ok.github.io/nodejs/09)  
+[NODE/LECTION/11 - Тестирование](https://zemla4ok.github.io/nodejs/11)  
 
 
 #### Задания
