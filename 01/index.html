@@ -21,25 +21,25 @@
     <section class="large">
       <h2>Node.js</h2>
       <p class="author">
-        <small>Лекция 01</small>
+        <small>Lecture 01</small>
       </p>
     </section>
 
     <section>
-      <h3 class="magenta">Введение в Node.js</h3>
+      <h3 class="magenta">Node.js Introduction</h3>
     </section>
 
     <section>
-      <h3 class="yellow">Цели</h3>
+      <h3 class="yellow">Goals</h3>
       <ul>
-        <li class="left fragment">архитектура</li>
+        <li class="left fragment">architecture</li>
         <li class="left fragment">event-driven-programming</li>
         <li class="left fragment">non-blocking I/O</li>
       </ul>
     </section>
 
     <section>
-      <h3>Кроссплатформенность</h3>
+      <h3>Cross-platform</h3>
       <div class=" resources"><img src="images/linux.png"></div>
       <div class=" resources"><img src="images/win.png"></div>
       <div class=" resources"><img src="images/mac.png"></div>
@@ -48,9 +48,9 @@
     <section>
       <h3>С++</h3>
       <table class="operations">
-        <tr><td colspan="3"><div class="center">Исходный код</div></td></tr>
-        <tr><td><div class="center">Компиляция</div></td><td><div class="center">Компиляция</div></td><td><div class="center">Компиляция</div></td></tr>
-        <tr><td><div class="center">Приложение</div></td><td><div class="center">Приложение</div></td><td><div class="center">Приложение</div></td></tr>
+        <tr><td colspan="3"><div class="center">Source code</div></td></tr>
+        <tr><td><div class="center">Compilation</div></td><td><div class="center">Compilation</div></td><td><div class="center">Compilation</div></td></tr>
+        <tr><td><div class="center">Application</div></td><td><div class="center">Application</div></td><td><div class="center">Application</div></td></tr>
         <tr><td><div class="center">Linux</div></td><td><div class="center">Windows</div></td><td><div class="center">OS X</div></td></tr>
       </table>
     </section>
@@ -58,41 +58,41 @@
     <section>
       <h3>Java / С#</h3>
       <table class="operations">
-        <tr><td colspan="3"><div class="center">Исходный код</div></td></tr>
-        <tr><td colspan="3"><div class="center">Компиляция</div></td></tr>
-        <tr><td colspan="3"><div class="center">Приложение</div></td></tr>
-        <tr><td colspan="3"><div class="center">Виртуальная машина</div></td></tr>
+        <tr><td colspan="3"><div class="center">Source code</div></td></tr>
+        <tr><td colspan="3"><div class="center">Compilation</div></td></tr>
+        <tr><td colspan="3"><div class="center">Application</div></td></tr>
+        <tr><td colspan="3"><div class="center">Virtual machine</div></td></tr>
         <tr><td><div class="center">Linux</div></td><td><div class="center">Windows</div></td><td><div class="center">OS X</div></td></tr>
       </table>
     </section>
 
     <section>
-      <h3>Кроссплатформенные<br>web-приложения ?</h3>
-    </section>
-
-    <section>
-      <h3>Web-приложения</h3>
+      <h3>Web-application</h3>
       <ul>
-        <li class="left fragment">находятся на сервере</li>
+        <li class="left fragment">on the server</li>
         <li class="left fragment">backend + frontend</li>
-        <li class="left fragment"><span class="red">backend</span>-код выполняется на сервере</li>
-        <li class="left fragment"><span class="magenta">frontend</span>-код выполняется на клиенте</li>
+        <li class="left fragment"><span class="red">backend</span>-code execution on the servers</li>
+        <li class="left fragment"><span class="magenta">frontend</span>-code execution on the client</li>
       </ul>
     </section>
 
     <section>
-      <h3>Кратко</h3>
+      <h3>Cross-platform<br>web-applications ?</h3>
+    </section>
+
+    <section>
+      <h3>Briefly</h3>
       <ul>
         <li class="fragment">Javascript + V8</li>
-        <li class="fragment">Асинхронный</li>
-        <li class="fragment">Однопоточный</li>
-        <li class="fragment">Событийно-ориентированный</li>
-        <li class="fragment">Не блокирующий</li>
+        <li class="fragment">Asynchronous</li>
+        <li class="fragment">Single-threaded</li>
+        <li class="fragment">Event-driven</li>
+        <li class="fragment">Non-blocking</li>
       </ul>
     </section>
 
     <section>
-      <h3>Применение</h3>
+      <h3>Using</h3>
       <ul>
         <li class="fragment">Web servers</li>
         <li class="fragment">Command-line tools</li>
@@ -102,13 +102,13 @@
     </section>
 
     <section>
-      <h3>Одно-/мнгопоточность</h3>
+      <h3>Single-/Multithreading</h3>
       <div class=" resources"><img src="images/s-thr.png"></div>
       <div class=" resources"><img src="images/m-thr.png"></div>
     </section>
 
     <section>
-      <h3>Параллелизм/Конкурентность</h3>
+      <h3>Parallelism/Concurrency</h3>
       <img class="concurr-img" src="images/concurrency.png">
     </section>
 
@@ -152,8 +152,8 @@
       <h4>Node.js - Event Loop</h4>
       <p>
       <ul>
-        <li class="fragment">макро-задачи - выполняются по одной за один проход цикла</li>
-        <li class="fragment">микро-задачи - на каждом проходе цикл выполняет все накопившееся</li>
+        <li class="fragment">Macro tasks - executes only one at the iteration of loop</li>
+        <li class="fragment">Micro tasks - executes all of them at the iteration of loop</li>
       </ul>
       </p>
     </section>
@@ -162,8 +162,8 @@
       <h4>Node.js - Event Loop</h4>
       <p>
       <ul>
-        <li class="fragment">макро-задачи (tasks queue): <span class="fragment">setTimeout,</span> <span class="fragment">setInterval,</span> <span class="fragment">setImmediate,</span> <span class="fragment">requestAnimationFrame,</span> <span class="fragment">I/O,</span> <span class="fragment">UI rendering</span></li>
-        <li class="fragment">микро-задачи - <span class="fragment">process.nextTick,</span> <span class="fragment">Object.observe,</span> <span class="fragment">Promises (resolved)</span></li>
+        <li class="fragment">Macro tasks (tasks queue): <span class="fragment">setTimeout,</span> <span class="fragment">setInterval,</span> <span class="fragment">setImmediate,</span> <span class="fragment">requestAnimationFrame,</span> <span class="fragment">I/O,</span> <span class="fragment">UI rendering</span></li>
+        <li class="fragment">Micro tasks - <span class="fragment">process.nextTick,</span> <span class="fragment">Object.observe,</span> <span class="fragment">Promises (resolved)</span></li>
       </ul>
       </p>
     </section>
@@ -257,17 +257,17 @@ async function magic() {
     </section>
 
     <section>
-      <h3>Однопоточность</h3>
+      <h3>Single-threading</h3>
       <img src="images/singlethread.png">
     </section>
 
     <section>
-      <h3>Многопоточность</h3>
+      <h3>Multithreading</h3>
       <img src="images/multithread.png">
     </section>
 
     <section>
-      <h3>Неблокирующий I/O</h3>
+      <h3>Non-blocking I/O</h3>
       <img src="images/non-blockng-io.png">
     </section>
 
@@ -279,7 +279,7 @@ async function magic() {
       <h3 class="yellow">BONUS</h3>
       <ul>
         <li class="left fragment"><a href="http://bluebirdjs.com/docs/getting-started.html" target="_blank">bluebird</a></li>
-        <li class="left fragment"><a href=http://latentflip.com/loupe" target="_blank">тык</a></li>
+        <li class="left fragment"><a href="http://latentflip.com/loupe" target="_blank">click</a></li>
       </ul>
     </section>
   </div>
