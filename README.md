@@ -8,5 +8,5 @@
 #### Задания
 
 [NODE/TASK/1 - npm](https://zemla4ok.github.io/nodejs/tasks/1.html)  
-[NODE/TASK/2 - http](https://zemla4ok.github.io/nodejs/tasks/1.html)  
+[NODE/TASK/2 - http](https://zemla4ok.github.io/nodejs/tasks/2.html)  
 
