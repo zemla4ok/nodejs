@@ -11,24 +11,24 @@
 
 <section class="header">
     <div class="header__content">
-        <div class="header__subject">HTTP-сервер на Node.js</div>
+        <div class="header__subject">HTTP server on Node.js</div>
         <div class="header__id">node_2</div>
     </div>
 </section>
 
 <section class="task">
     <div class="task__statement">
-        Создаем на Github репозиторий <span class="task__inline-code">node_2</span>, клонируем его, открываем в IDE
+        Create a repository on Github <span class="task__inline-code">node_2</span>, clone it, open it in IDE
     </div>
 </section>
 
 <section class="task">
     <div class="task__statement">
-        Создаем файл <span class="task__inline-code">index.js</span>
+        Create a file <span class= "task__inline-code">index.js</span>
     </div>
 
     <div class="task__statement">
-        Напишем в нем самый простой http-сервер
+        Let's write the simplest http-server in it
     </div>
 
     <pre><code class="task__code javascript">const http = require('http');
@@ -37,29 +37,28 @@ const hostname = '127.0.0.1';
 const port = 3000;
 
 const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World');
+ res.statusCode = 200;
+ res.setHeader('Content-Type', 'text/plain');
+ res.end('Hello World');
 });
 
 server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+console.log(`Server running at http://${hostname}:${port}/`);
 });</code></pre>
 
     <div class="task__statement">
-        Запустим сервер - <span class="task__inline-code">node index.js</span>
+    Let's launch the server - <span class="task__inline-code">node index.js</span>
     </div>
 
-
     <div class="task__statement">
-        Запустим браузер и перейдем по адресу <span class="task__inline-code">127.0.0.1:3000</span>, должны увидеть наше
-        приветствие
+        Let's launch the browser and go to the address <span class= "task__inline-code">127.0.0.1:3000</span>, should see our
+        greeting
     </div>
 </section>
 
 <section class="task">
     <div class="task__statement">
-        Перепишем наш сервер для того, чтобы он принимал и возвращал <span class="task__inline-code">JSON</span>
+        Let's rewrite our server so that so that it accepts and returns <span class="task__inline-code">JSON</span>
     </div>
 
     <pre><code class="task__code javascript">const http = require('http');
@@ -68,65 +67,65 @@ const hostname = '127.0.0.1';
 const port = 3000;
 
 const server = http.createServer((req, res) => {
-  parseBodyJson(req, (err, payload) => {
-    const c = { c: payload.a + payload.b };
+ parseBodyJson(req, (err, payload) => {
+ const c = { c: payload.a + payload.b };
 
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end( JSON.stringify(c) );
-  });
+ res.statusCode = 200;
+ res.setHeader('Content-Type', 'application/json');
+ res.end( JSON.stringify(c) );
+ });
 });
 
 server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+ console.log(`Server running at http://${hostname}:${port}/`);
 });
 
 function parseBodyJson(req, cb) {
-  let body = [];
+ let body = [];
 
-  req.on('data', function(chunk) {
-    body.push(chunk);
-  }).on('end', function() {
-    body = Buffer.concat(body).toString();
+ req.on('data', function(chunk) {
+ body.push(chunk);
+ }).on('end', function() {
+ body = Buffer.concat(body).toString();
 
-    let params = JSON.parse(body);
+ let params = JSON.parse(body);
 
-    cb(null, params);
-  });
+ cb(null, params);
+ });
 }</code></pre>
 
     <div class="task__statement">
-        Перезапустим наш сервер. Остановить запущееный в терминале сервер можно комбанацией клавиш <span
+        Let's restart our server. You can stop the server running in the terminal with the key combination <span
             class="task__inline-code">Ctrl + C</span>
     </div>
 
     <div class="task__statement">
-        Установим программу для отправки HTTP-запросов <a class="task__link" target="_blank"
-                                                          href="https://www.getpostman.com/">Postman</a>
+        Let's install a program for sending HTTP requests <a class="task__link " target="_blank"
+                                                             href="https://www.getpostman.com/">Postman</a>
     </div>
 
     <div class="task__statement">
-        Через Postman отправим <span class="task__inline-code">POST</span> запрос в формате <span
-            class="task__inline-code">JSON</span> на уже знакомый адрес с телом
+        We will send <span class="task__inline-code" via Postman >POST</span> request in <span
+            class="task__inline-code">JSON</span> format to the already familiar address with the body
     </div>
 
     <pre><code class="task__code json">{
-  "a": 41,
-  "b": 1
+"a" : 41,
+"b": 1
 }</code></pre>
 
     <div class="task__statement">
-        Должны получить следующий ответ
+        Should get the following response
     </div>
 
     <pre><code class="task__code json">{
-  "с": 42
+"с": 42
 }</code></pre>
 </section>
 
 <section class="task">
-    <div class="task__statement">
-        Выделим отдельный URL для суммирования чисел
+    <div class="task__statement" >
+        Let's allocate a separate URL for summing up the numbers
     </div>
 
     <pre><code class="task__code javascript">const http = require('http');
@@ -135,85 +134,85 @@ const hostname = '127.0.0.1';
 const port = 3000;
 
 const handlers = {
-  '/sum': sum
+'/sum': sum
 };
 
 const server = http.createServer((req, res) => {
-  parseBodyJson(req, (err, payload) => {
-    const handler = getHandler(req.url);
+ parseBodyJson(req, (err, payload) => {
+ const handler = getHandler(req.url);
 
-    handler(req, res, payload, (err, result) => {
-      if (err) {
-        res.statusCode = err.code;
-        res.setHeader('Content-Type', 'application/json');
-        res.end( JSON.stringify(err) );
+ handler(req, res, payload, (err, result) => {
+ if (err) {
+ res.statusCode = err.code;
+ res.setHeader('Content-Type', 'application/json');
+ res.end( JSON.stringify(err) );
 
-        return;
-      }
+ return;
+ }
 
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.end( JSON.stringify(result) );
-    });
-  });
+ res.statusCode = 200;
+ res.setHeader('Content-Type', 'application/json');
+ res.end( JSON.stringify(result) );
+ });
+ });
 });
 
 server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+ console.log(`Server running at http://${hostname}:${port}/`);
 });
 
 function getHandler(url) {
-  return handlers[url] || notFound;
+ return handlers[url] || notFound;
 }
 
 function sum(req, res, payload, cb) {
-  const result = { c: payload.a + payload.b };
+ const result = { c: payload.a + payload.b };
 
-  cb(null, result);
+ cb(null, result);
 }
 
 function notFound(req, res, payload, cb) {
-  cb({ code: 404, message: 'Not found'});
+ cb({ code: 404, message: 'Not found'});
 }
 
 function parseBodyJson(req, cb) {
-  let body = [];
+ let body = [];
 
-  req.on('data', function(chunk) {
-    body.push(chunk);
-  }).on('end', function() {
-    body = Buffer.concat(body).toString();
+ req.on('data', function(chunk) {
+body.push(chunk);
+}).on('end', function() {
+body = Buffer.concat(body).toString();
 
-    let params = JSON.parse(body);
+let params = JSON .parse(body);
 
-    cb(null, params);
-  });
+cb(null, params);
+});
 }</code></pre>
 
     <div class="task__statement">
-        Перезапустим наш сервер ещё раз и проверим его работу через Postman. URL теперь поменялся на <span
-            class="task__inline-code">127.0.0.1:3000/sum</span>
+        Let's restart our server again and check its operation via Postman. The URL has now changed to <span
+        class="task__inline-code">127.0.0.1:3000/sum</span>
     </div>
 
     <div class="task__statement">
-        Попробуем отправить запрос на другой URL, например, <span class="task__inline-code">127.0.0.1:3000/mult</span>
+        Let's try sending a request to another URL, for example, <span class="task__inline-code" >127.0.0.1:3000/mult</span>
     </div>
 </section>
 
 <section class="task">
     <div class="task__statement">
-        Теперь нам необходимо расширить функционал нашего сервера. Он должен предоставлять возможность выполнять
-        CRUD-операции для <span class="task__inline-code">статей</span> и <span
-            class="task__inline-code">комментариев</span> к этим статьям
+        Now we need to expand the functionality of our server. It should provide the ability to perform
+        CRUD operations for <span class="task__inline-code">articles</span> and <span
+            class="task__inline-code">comments</span> to these articles
     </div>
 
     <div class="task__statement">
-        1. Массив статей/комментариев хранить в файле <span class="task__inline-code">articles.json</span> и загружать
-        при запуске сервера. Важно чтобы сервер не начинал принимать запросы до того как массив станет доступен
+        1. Store the array of articles/comments in the file <span class="task__inline-code">articles.json</span> and load it
+        when the server starts. It is important that the server does not start accepting requests before the array is available
     </div>
 
     <div class="task__statement">
-        2. Модель статьи:
+        2. Article model:
         <pre><code class="task__code json">"id": int / string
 "title": string
 "text": string
@@ -223,7 +222,7 @@ function parseBodyJson(req, cb) {
     </div>
 
     <div class="task__statement">
-        3. Модель комментария:
+        3. Comment model:
         <pre><code class="task__code json">"id": int / string
 "articleId": int / string
 "text": string
@@ -232,63 +231,63 @@ function parseBodyJson(req, cb) {
     </div>
 
     <div class="task__statement">
-        4. Реализовать логику для следующих URL:
+        4. Implement logic for the following URLs:
         <br><br>
-        <span class="task__inline-code">/api/articles/readall</span> - возвращает массив статей с комментариями
+        <span class="task__inline-code">/api/articles/readall</span> - returns an array of articles with comments
         <br><br>
-        <span class="task__inline-code">/api/articles/read</span> - возвращает статью с комментариями по переданному в
-        теле запроса <span class="task__inline-code">id</span>
+        <span class="task__inline-code">/api/articles/read</span> - returns an article with comments by the <span class="task__inline-code">id</span> passed in the
+        request body
         <br><br>
-        <span class="task__inline-code">/api/articles/create</span> - создает статью с переданными в теле запроса
-        параметрами / <span class="task__inline-code">id</span> генерируется на сервере / сервер возвращает созданную
-        статью
+        <span class="task__inline-code">/api/articles/create</span> - creates an article with the parameters passed in the
+        request body / <span class="task__inline-code">id</span> is generated on the server / the server returns the created
+        article
         <br><br>
-        <span class="task__inline-code">/api/articles/update</span> - обновляет статью с переданными параметрами по
-        переданному <span class="task__inline-code">id</span>
+        <span class="task__inline-code">/api/articles/update</span> - updates an article with the parameters passed by the
+        passed <span class="task__inline-code">id</span>
         <br><br>
-        <span class="task__inline-code">/api/articles/delete</span> - удаляет статью по переданному <span
+        <span class="task__inline-code">/api/articles/delete</span> - deletes an article by the passed <span
             class="task__inline-code">id</span>
         <br><br>
-        <span class="task__inline-code">/api/comments/create</span> - создает комментарий для статьи с переданными в
-        теле запроса параметрами (в том числе <span class="task__inline-code">articleId</span>) / <span
-            class="task__inline-code">id</span> генерируется на сервере / сервер возвращает созданный комментарий
+        <span class="task__inline-code">/api/comments/create</span> - creates a comment for an article with the parameters passed in the
+        request body (including <span class="task__inline-code">articleId</span>) / <span
+            class="task__inline-code">id</span> is generated on the server / the server returns the created comment
         <br><br>
-        <span class="task__inline-code">/api/comments/delete</span> - удаляет комментарий по переданному <span
+        <span class="task__inline-code">/api/comments/delete</span> - deletes a comment by the passed <span
             class="task__inline-code">id</span>
     </div>
 
     <div class="task__statement">
-        5. На операции создания, обновления и удаления сервер должен также обновлять файл <span
-            class="task__inline-code">articles.json</span>
+        5. On create, update, and delete operations, the server must also update the <span
+            class="task__inline-code">articles.json</span> file
     </div>
 
     <div class="task__statement">
-        6. Сервер должен вести логи для всех запросов на сервер с информацией о дате и времени запроса, запрашиваемом
-        URL и теле запроса. Оформим лог с хорошими отступами, чтобы было удобнее читать
+        6. The server must keep logs for all requests to the server with information about the date and time of the request, the requested
+        URL and the body of the request. Let's format the log with good indents to make it easier to read
     </div>
 
     <div class="task__statement">
-        7. Запрограммируем ответы сервера таким образом, чтобы клиенту не требовалось дожидаться записи в лог и дампа
-        файла <span class="task__inline-code">articles.json</span>
+        7. We will program the server responses in such a way that the client does not need to wait for the log entry and dump of the
+        file <span class="task__inline-code">articles.json</span>
     </div>
 
     <div class="task__statement">
-        8. Вынесем обработчики разных URL в отдельные файлы
+        8. We will move the handlers of different URLs to separate files
     </div>
 
     <div class="task__statement">
-        9. Запрограммируем валидацию для входных данных, чтобы убедится что клиент посылает нам достаточно данных. В
-        случае если данных недостаточно либо формат данных неверен будем возвращать ошибку
+        9. We will program the validation for the input data to make sure that the client sends us enough data. In
+        case there is not enough data or the data format is incorrect, we will return an error
         <pre><code class="task__code json">{
-  "code": 400,
-  "message: "Request invalid"
+"code": 400,
+"message: "Request invalid"
 }</code></pre>
     </div>
 </section>
 
 <section class="task">
     <div class="task__statement">
-        Синхронизируем локальный репозиторий с удаленным (сделаем push на Github)
+        Synchronize the local repository with the remote one (push to Github)
     </div>
 </section>
 
@@ -296,35 +295,34 @@ function parseBodyJson(req, cb) {
     <div class="task__statement">
         <input class="task__checkbox" type="checkbox">
         <span>
-      Покажите историю коммитов своего репозитория на Github(Скриншот)
-    </span>
+Show the commit history of your repository on Github (Screenshot)
+</span>
     </div>
 
     <div class="task__statement">
         <input class="task__checkbox" type="checkbox">
         <span>
-      Продемонстрируйте запросы через Postman(Скриншоты)
-    </span>
+Show requests via Postman(Screenshots)
+</span>
     </div>
 
     <div class="task__statement">
         <input class="task__checkbox" type="checkbox">
         <span>
-      Продемонстрируйте логи сервера(Скриншот)
-    </span>
+Show server logs(Screenshot)
+</span>
     </div>
 </section>
 
 <section class="task task_extras">
     <div class="task__statement">
-        <a class="task__link" target="_blank" href="https://nodejs.org/dist/latest-v8.x/docs/api/http.html">Документация модуля http</a>
+        <a class="task__link" target="_blank" href="https://nodejs.org/dist/latest-v8.x/docs/api/http.html">http module documentation</a>
     </div>
 </section>
 
 <section class="task task_extras">
     <div class="task__statement">
-        <a class="task__link" target="_blank" href="https://nodejs.org/dist/latest-v8.x/docs/api/http.html">Документация
-            модуля http</a>
+        <a class="task__link" target="_blank" href="https://nodejs.org/dist/latest-v8.x/docs/api/http.html">Documentation http module</a>
     </div>
 </section>
 
