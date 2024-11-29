@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>05</title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../css/reveal.css">
+  <link rel="stylesheet" href="../css/theme/yandex.css" id="theme">
+  <link rel="stylesheet" href="../lib/css/zenburn.css">
+  <link rel="stylesheet" href="../css/user.css">
+  <link rel="icon" href="../icons/favicon.png">
+  <style>
+
+  </style>
+</head>
+<body class="yandex nodejs">
+<div class="reveal">
+  <div class="slides">
+
+    <section class="large">
+      <h2>Node.js</h2>
+      <p class="author">
+        <small>Lecture 06</small>
+      </p>
+    </section>
+
+    <section>
+      <h3 class="magenta">Asynchronous Programming and Promises</h3>
+    </section>
+
+    <section>
+      <h3 class="yellow">Goal</h3>
+      <ul>
+        <li class="left fragment">Callbacks</li>
+        <li class="left fragment">Promises</li>
+        <li class="left fragment">Async/Await</li>
+      </ul>
+    </section>
+
+      <section>
+          <h3><span class="red">C</span>allback</h3>
+          <h4>Callback functions</h4>
+      </section>
+
+      <section class="">
+          <h4>Callback</h4>
+
+          <pre class="javascript"><code>
+let forEach = function (items, algo) {
+  for (let i = 0; i < items.length; i++) {
+    algo(items[i]);
+  }
+};
+
+let print = function (item) {
+  console.log(item);
+};
+
+let send = function (item) {
+  item.sendEmail();
+};
+    </code></pre>
+      </section>
+
+      <section>
+          <h4>Callback</h4>
+
+          <pre class="javascript"><code>
+let clients = [
+  { email: 'jonhdoe@gmail.com',
+    sendEmail: () => {} },
+  { email: 'mrsmith@gmail.com',
+    sendEmail: () => {} }
+];
+
+// print clients
+forEach(clients, print);
+
+// send emails
+forEach(clients, send);
+    </code></pre>
+      </section>
+
+      <section>
+          <h4>Callback - usage</h4>
+          <ul>
+              <li class="left fragment">algorithm changing</li>
+              <li class="left fragment">notifying about events</li>
+          </ul>
+      </section>
+
+      <section>
+          <h4>Callback - + / -</h4>
+          <ul>
+              <li class="left fragment green">reusing of the code</li>
+              <li class="left fragment green">functionality changing w/o method changing</li>
+              <li class="left fragment green">creation chains of calls</li>
+              <li class="left fragment red">less performance</li>
+              <li class="left fragment red">less readability</li>
+          </ul>
+      </section>
+
+      <section>
+          <h3>Callback - Error first</h3>
+          <pre class="javascript"><code>
+function callback(error, data) {
+  if (error) {
+    // handle an error
+  } else {
+    // work with data
+  }
+}
+    </code></pre>
+      </section>
+
+      <section>
+          <h3>Callback hell / Pyramid of Doom</h3>
+
+          <img class="fragment"  src="images/cb-hell-1.jpg">
+      </section>
+
+      <section>
+          <h3>Callback hell / Pyramid of Doom</h3>
+
+          <img src="images/cb-hell-2.jpg">
+      </section>
+
+      <section>
+    <pre class="javascript"><code>
+fs.readdir(dir, (err, files) => {
+  if (err) { ... }
+
+  files.forEach((name) => {
+    if (!isImage(name)) return;
+
+    fs.readFile(name, (err, image) => {
+      if (err) { ... }
+
+      compress(image, (err, comp) => {
+        fs.writeFile(name, comp, (err) =>{
+          if (err) { ... }
+          else { ... }
+        });
+      });
+    });
+  });
+});
+    </code></pre>
+      </section>
+
+      <section>
+          <p class="left">1. Split on functions</p>
+          <pre class="javascript"><code>
+fs.readdir(dir, processFiles);
+    </code></pre>
+      </section>
+
+      <section>
+          <p class="left">1. Split on functions</p>
+          <pre class="javascript"><code>
+function processFiles(err, files) {
+  if (err) { ... }
+
+  files.forEach(checkFile);
+}
+    </code></pre>
+      </section>
+
+      <section>
+          <p class="left">1. Split on functions</p>
+          <pre class="javascript"><code>
+function checkFile(name) {
+  if (!isImage(name)) return;
+
+  fs.readFile(name, compressImage(name));
+}
+    </code></pre>
+      </section>
+
+      <section>
+          <p class="left">1. Split on functions</p>
+          <pre class="javascript"><code>
+function compressImage(name) {
+  return (err, image) => {
+    if (err) { ... }
+    compress(file, rewriteImage(name));
+  }
+}
+    </code></pre>
+      </section>
+
+      <section>
+          <p class="left">1. Split on functions</p>
+          <pre class="javascript"><code>
+function rewriteImage(name) {
+  return (err, image) => {
+    fs.writeFile(name, image, finishCompress);
+  }
+}
+    </code></pre>
+      </section>
+
+      <section>
+          <p class="left">1. Split on functions</p>
+          <pre class="javascript"><code>
+function finishCompress(err) {
+  if (err) { ... }
+  else { ... }
+}
+    </code></pre>
+      </section>
+
+      <section>
+    <pre class="javascript small-code"><code>
+function processFiles(err, files) {
+  if (err) { ... }
+
+  files.forEach(checkFile);
+}
+
+function checkFile(name) {
+  if (!isImage(name)) return;
+
+  fs.readFile(name, compressImage(name));
+}
+
+function compressImage(name) {
+  return (err, image) => {
+    if (err) { ... }
+    compress(file, rewriteImage(name));
+  }
+}
+
+function rewriteImage(name) {
+  return (err, image) => {
+    fs.writeFile(name, image, finishCompress);
+  }
+}
+
+function finishCompress(err) {
+  if (err) { ... }
+  else { ... }
+}
+
+fs.readdir(dir, processFiles);
+    </code></pre>
+      </section>
+
+      <section>
+          <p class="left">2. Split on modules</p>
+          <pre class="javascript"><code>
+...
+
+function readDir(dir) {
+  fs.readdir(dir, processFiles);
+}
+
+module.export = readDir;
+    </code></pre>
+
+          <pre class="javascript"><code>
+const compressImagesDir
+      = require('./compressImagesDir');
+
+compressImagesDir('/tmp/images');
+    </code></pre>
+      </section>
+
+      <section>
+          <h3><span class="red">P</span>romises</h3>
+      </section>
+
+      <section>
+          <h4>Promises/A+</h4>
+
+          <pre class="javascript"><code>
+function zipDir(dir) {
+  return new Promise((resolve, reject) => {
+    // archive the directory
+    resolve(files);
+  });
+};
+
+zipDir('/tmp/images')
+  .then((files) => {
+    // work with files
+  });
+    </code></pre>
+      </section>
+
+      <section>
+          <h4>Promises</h4>
+
+          <pre class="javascript"><code>
+function zipDir(dir) {
+  return new Promise((resolve, reject) => {
+    // smth went wrong
+    reject(err);
+  });
+};
+
+zipDir('/tmp/images')
+  .then((files) => { ... })
+  .catch((err) => {
+    // handle an error
+  });
+    </code></pre>
+      </section>
+
+      <section>
+          <h4>Promises</h4>
+
+          <pre class="javascript"><code>
+function zipDir(dir) {
+  return new Promise((resolve, reject) => {
+    // smth went wrong
+    reject(err);
+  });
+};
+
+zipDir('/tmp/images')
+  .then((files) => { ... }, (err) => { ... });
+    </code></pre>
+      </section>
+
+      <section>
+          <h4>Promises</h4>
+
+          <pre class="javascript"><code>
+// Deffered Object
+function zipDir(dir) {
+  return new Promise((resolve, reject) => {
+    // Future
+    resolve(files);
+  });
+};
+
+// Promise
+let p = zipDir('/tmp/images');
+
+p.then((files) => { ... }, (err) => { ... });
+    </code></pre>
+      </section>
+
+      <section>
+          <h4>Promises - states</h4>
+
+          <ul>
+              <li class="left fragment magenta">pending</li>
+              <li class="left fragment green">fullfiled / done</li>
+              <li class="left fragment red">rejected / failed</li>
+          </ul>
+      </section>
+
+      <section>
+          <h4>Promises - wrapper</h4>
+
+          <pre class="javascript"><code>
+function resolver(resolve, reject) {
+  return (err, data) => {
+    if (err) reject(err);
+    else resolve(data);
+  }
+}
+
+function readDir(dir) {
+  return new Promise((res, rej) => {
+    fs.readir(dir, resolver(res, rej));
+  });
+}
+    </code></pre>
+      </section>
+
+      <section>
+          <h4>Promises - chain</h4>
+
+          <pre class="javascript"><code>
+function readDir(dir) {
+  return new Promise((res, rej) => {
+    // read files from dir
+  });
+}
+
+function zip(files) {
+  return new Promise((res, rej) => {
+    // archive files
+  });
+}
+
+function sendByEmail(file) {
+  return new Promise((res, rej) => {
+    // send file via email
+  });
+}
+    </code></pre>
+      </section>
+
+      <section>
+          <h4>Promises - chain</h4>
+
+          <pre class="javascript"><code>
+readDir('/tmp/images')
+
+  .then((files) => { return zip(files) })
+
+  .then((file) => { return sendByEmail(file) })
+
+  .then(() => { ... })
+
+  .catch((err) => { ... });
+    </code></pre>
+      </section>
+
+      <section>
+          <h4>Promises - All</h4>
+
+          <pre class="javascript"><code>
+readDir('/tmp/images')
+
+  .then((files) => { return zip(files) })
+
+  .then((file) => {
+    return Promise.all([
+      sendByEmail(user.email, file),
+      sendByEmail(admin.email, file)
+    ]);
+  })
+
+   // results - array of promises results
+  .then((results) => { ... })
+
+  .catch((err) => { ... });
+    </code></pre>
+      </section>
+
+      <section>
+          <h4>Promises - Race</h4>
+
+          <pre class="javascript"><code>
+readDir('/tmp/images')
+
+  .then((files) => { return zip(files) })
+
+  .then((file) => {
+    return Promise.race([
+      sendByEmail(user.email[0], file),
+      sendByEmail(user.email[1], file)
+    ]);
+  })
+
+   // result - data from executed promise
+  .then((result) => { ... })
+
+  .catch((err) => { ... });
+    </code></pre>
+      </section>
+
+      <section>
+          <h4>Promises - specialities</h4>
+
+          <pre class="javascript"><code>
+const a = new Promise(...);
+
+a.then((data) => ..., (error) => ...);
+
+!=
+
+a.then(...).catch(...);
+    </code></pre>
+      </section>
+
+      <section>
+          <h4>Promises - specialities</h4>
+
+          <pre class="javascript"><code>
+const a = new Promise(...);
+
+a.then(...);
+a.then(...);
+
+!=
+
+a.then(...).then(...);
+    </code></pre>
+      </section>
+
+      <section>
+          <h4>Promises - specialities</h4>
+
+          <pre class="javascript"><code>
+const a = new Promise(...);
+
+a.then(...)
+  .catch(...)
+  .then(...)
+  .catch(...);
+    </code></pre>
+      </section>
+
+      <section>
+          <h3><span class="red">A</span>sync/Await</h3>
+      </section>
+
+      <section>
+          <h4>Async/Await</h4>
+
+          <pre class="javascript"><code>
+async function read() {
+  let content = await
+    fs.readFileAsync('hero.txt', 'utf-8');
+
+  console.log(content);
+};
+
+read();
+    </code></pre>
+      </section>
+
+      <section>
+          <h4>Async/Await</h4>
+
+          <pre class="javascript"><code>
+async function magic() {
+  try {
+    const files = await readDir('/tmp/images');
+
+    const archive = await zip(files);
+
+    await Promise.all([
+      sendByEmail(user.email, file),
+      sendByEmail(admin.email, file)
+    ]);
+
+    ...
+  } catch (error) {
+    ...
+  }
+}
+    </code></pre>
+      </section>
+
+      <section>
+          <h4>Async/Await</h4>
+
+          <pre class="javascript"><code>
+(async function () {
+  ...
+})();
+    </code></pre>
+     </section>
+
+     <section>
+      <h3>Q&A</h3>
+    </section>
+
+<!--      http://callbackhell.com/-->
+
+
+  </div>
+</div>
+
+<script src="../lib/js/head.min.js"></script>
+<script src="../js/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    controls: false,
+    progress: true,
+    slideNumber: true,
+    history: true,
+    center: true,
+    hideAddressBar: true,
+    transition: 'slide',
+    dependencies: [
+      {
+        src: '../plugin/highlight/highlight.js',
+        async: true,
+        condition: function () {
+          return Boolean(document.querySelector('pre code'));
+        },
+        callback: function () {
+          hljs.initHighlightingOnLoad();
+        }
+      }
+    ]
+  });
+
+  const body = document.getElementsByClassName('yandex')[0];
+  let invert = false;
+
+  body.onkeypress = function (event) {
+    if (event.key.toLowerCase() !== 'i') return;
+
+    if (invert) body.style = '';
+    else body.style = 'filter: invert(100%)';
+
+    invert = !invert;
+  }
+</script>
+</body>
+</html>
