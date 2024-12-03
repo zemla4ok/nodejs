@@ -14,5 +14,5 @@ NODE/LECTURE/5 -  Streams. fs + path modules{live coding}
 
 [NODE/TASK/1 - npm](https://zemla4ok.github.io/nodejs/tasks/1.html) # (After lecture 2)  
 [NODE/TASK/2 - http](https://zemla4ok.github.io/nodejs/tasks/2.html) # (After lecture 4)  
-[NODE/TASK/2 - http](https://zemla4ok.github.io/nodejs/tasks/3.html) # (After lecture 7)  
+[NODE/TASK/3 - express](https://zemla4ok.github.io/nodejs/tasks/3.html) # (After lecture 7)  
 
