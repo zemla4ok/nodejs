@@ -18,83 +18,97 @@
 
 <section class="task">
     <div class="task__statement">
-        Создаем на Github репозиторий <span class="task__inline-code">node_3</span>, клонируем его, открываем в IDE
+        We create a repository on GitHub <span class="task__inline-code">node_3</span>, clone it, open it in IDE
     </div>
 
     <div class="task__statement">
-        Создаем файл <span class="task__inline-code">package.json</span> и с помощью терминала устанавливаем express <span class="task__inline-code">npm i express</span>
+        Create a file <span class="task__inline-code">package.json</span> and install express using the terminal <span class="task__inline- code">npm i express</span>
     </div>
 </section>
 
 <section class="task">
     <div class="task__statement">
-        Создаем файл <span class="task__inline-code">index.js</span>, в котором напишем простой сервер на express:
+        Create a file <span class="task__inline-code">index.js</span>, in which we will write a simple server on express:
     </div>
 
     <pre><code class="task__code javascript">const express = require('express');
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.get(' /', (req, res) => {
+res.send('Hello World!');
 });
 
 app.listen(3000, () => {
-  console.log('Example app listening on port 3000!');
+console.log('Example app listening on port 3000!');
 })</code></pre>
 
     <div class="task__statement">
-        Запустим наш сервер и зайдем на адрес <span class="task__inline-code">http://127.0.0.1:3000</span> в браузере
+        Let's launch our server and go to address <span class="task__inline-code">http://127.0.0.1:3000</span> in
+        browser
     </div>
 </section>
 
 <section class="task">
     <div class="task__statement">
-        Нам необходимо разработать API для работы с коллекцией фильмов
+        We need to develop an API for working with a collection of films
     </div>
 
     <div class="task__statement">
-        1. Модель фильма:
+        1. Film model:
         <pre><code class="task__code json">"id": int / string
 "title": string
-"rating": string // оценка
-"year": int // год выпуска
-"budget": int // бюджет
-"gross": int // сборы
-"poster": string // url постера
-"position": int // позиция в рейтинге</code></pre>
+"rating": string // rating
+"year": int // year of release
+"budget": int // budget
+"gross": int // box office
+"poster": string // poster url
+"position": int // position in the rating</code></pre>
     </div>
 
     <div class="task__statement">
-        2. Составить <span class="task__inline-code">top250.json</span> из <a target="_blank" href="https://www.kinopoisk.ru/top/" class="task__link">Top-250 Кинопоиска</a>.
-        Для этого напишем скрипт, который достанет список файлов и сложим их в <span class="task__inline-code">top250.json</span>.
+        2. Compile <span class="task__inline-code">top250.json</span> from <a target="_blank"
+                                                                              href="https://www.kinopoisk.ru/top/"
+                                                                              class="task__link">Kinopoisk Top 250</a>.
+        Optionally you can try to create a script for grabbing data from website into <span class="task__inline-code">top250.json</span>.
     </div>
 
     <div class="task__statement">
-        3. Реализовать логику для следующих URL:
+        3. Implement logic for the following URLs:
         <br><br>
-        <span class="task__inline-code">GET /api/films/readall</span> - возвращает массив фильмов отсортированных по полю <span class="task__inline-code">position</span> по возрастанию
+        <span class="task__inline-code">GET /api/films/readall</span> - returns an array of films sorted by the <span
+            class="task__inline-code">position</span> field in ascending order
         <br><br>
-        <span class="task__inline-code">GET /api/films/read</span> - возвращает фильм по переданному в теле запроса <span class="task__inline-code">id</span>
+        <span class="task__inline-code">GET /api/films/read</span> - returns a film by the <span
+            class="task__inline-code">id</span> passed in the request body
         <br><br>
-        <span class="task__inline-code">POST /api/films/create</span> - создает фильм с переданными в теле запроса параметрами / <span class="task__inline-code">id</span> генерируется на сервере / если фильм с такой позицией уже существует, то все фильмы от данной позиции сдвигаются на один вниз / сервер возвращает созданный фильм
+        <span class="task__inline-code">POST /api/films/create</span> - creates a film with the parameters passed in the
+        request body / <span class="task__inline-code">id</span> is generated on the server / if a film with this
+        position already exists, then all films from this position shift down one / the server returns the created movie
         <br><br>
-        <span class="task__inline-code">POST /api/films/update</span> - обновляет фильм с переданными параметрами по переданному <span class="task__inline-code">id</span> / здесь тоже не забываем про сдвиг / возвращаем обновленный фильм / клиент может присылать для обновления только часть полей
+        <span class="task__inline-code">POST /api/films/update</span> - updates the movie with the passed parameters by
+        the passed <span class="task__inline-code">id</span> / here we also do not forget about the shift / we return
+        the updated movie / the client can send only part of the fields for updating
         <br><br>
-        <span class="task__inline-code">POST /api/films/delete</span> - удаляет фильм по переданному <span class="task__inline-code">id</span> / сдвигаем остальные фильмы так, что бы не было пробелов
+        <span class="task__inline-code">POST /api/films/delete</span> - deletes the movie by the passed <span
+            class="task__inline-code">id</span> / we shift the remaining movies so that there are no spaces
     </div>
 
     <div class="task__statement">
-        4. Добавить валидацию входящих запросов. Например, при создании фильма клиент прислал не всю информацию - возвращаем ему ошибку. Или дата до изобретения кинематографа, или отрицательный бюджет/сборы и т.д.
+        4. Add validation of incoming requests. For example, when creating a movie, the client did not send all the
+        information - we return an error to him. Or the date is before the invention of cinematography, or a negative
+        budget/box office, etc.
     </div>
 
     <div class="task__statement">
-        5. Предусмотреть случай, когда клиент присылает для создания/обновления фильм с такой позицией, что образуется пробел. В этом случае нам надо изменить присланную позицию. Например, у нас два фильма с позициями 1, 2. Клиент присылает фильм на позицию 5. Мы присваиваем такому фильму позицию 3.
+        5. Provide for the case when a client sends a movie for creation/update with a position that creates a gap. In
+        this case, we need to change the sent position. For example, we have two movies with positions 1, 2. The client
+        sends a movie for position 5. We assign position 3 to this movie.
     </div>
 </section>
 
 <section class="task">
     <div class="task__statement">
-        Синхронизируем локальный репозиторий с удаленным (сделаем push на Github)
+        Synchronize the local repository with the remote one (push to Github)
     </div>
 </section>
 
@@ -102,21 +116,21 @@ app.listen(3000, () => {
     <div class="task__statement">
         <input class="task__checkbox" type="checkbox">
         <span>
-      Сбросьте ссылочку на GitHub репозиторий.
-    </span>
+Drop a link to the GitHub repository.
+</span>
     </div>
 
     <div class="task__statement">
         <input class="task__checkbox" type="checkbox">
         <span>
-      Продемонстрируйте работу сервера через Postman(сбросить скриншоты)
-    </span>
+Demonstrate server work via Postman (drop screenshots)
+</span>
     </div>
 </section>
 
 <section class="task task_extras">
     <div class="task__statement">
-        <a class="task__link" target="_blank" href="http://expressjs.com/en/4x/api.html">Документация по Express</a>
+        <a class="task__link" target="_blank" href="http://expressjs.com/en/4x/api.html">Express Documentation</a>
     </div>
 </section>
 
