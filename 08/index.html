@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>08</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="../css/reveal.css">
+    <link rel="stylesheet" href="../css/theme/yandex.css" id="theme">
+    <link rel="stylesheet" href="../lib/css/zenburn.css">
+    <link rel="stylesheet" href="../css/user.css">
+</head>
+<body class="yandex nodejs"><div class="reveal"><div class="slides">
+
+    <section class="large">
+        <h2>Node.js</h2>
+        <p class="author">
+            <small>Lecture 08</small>
+        </p>
+    </section>
+
+    <section>
+        <h4>Databases</h4>
+    </section>
+
+    <section>
+        <h4>Types</h4>
+
+        <ul>
+            <li class="left fragment">Relational[SQL]</li>
+            <li class="left fragment">Non-Relational[NoSQL]</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>SQL</h4>
+
+        <img src="images/sql.png">
+    </section>
+
+    <section>
+        <h4>One-to-One</h4>
+
+        <img src="images/ont-to-one.png">
+    </section>
+
+    <section>
+        <h4>One-to-Many/Many-to-One</h4>
+
+        <img src="images/one-to-many.png">
+    </section>
+
+    <section>
+        <h4>Many-to-Many</h4>
+
+        <img src="images/many-to-many.png">
+    </section>
+
+    <section>
+        <h4>Constraints</h4>
+
+        <ul>
+            <li class="left fragment">NOT NULL</li>
+            <li class="left fragment">UNIQUE</li>
+            <li class="left fragment">PRIMARY KEY</li>
+            <li class="left fragment">FOREIGN KEY</li>
+            <li class="left fragment">DEFAULT</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>Table creation</h4>
+
+    <pre class="sql fragment"><code>
+    CREATE TABLE Persons (
+    ID int primary key,
+    LastName varchar(255),
+    FirstName varchar(255),
+    Address varchar(255),
+    City varchar(255) default null
+    );
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>Table changing</h4>
+
+        <pre class="sql fragment"><code>
+ALTER TABLE Customers
+ADD Email varchar(255);
+    </code></pre>
+
+        <pre class="sql fragment"><code>
+ALTER TABLE Customers
+DROP COLUMN Email;
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>Add record into table</h4>
+
+        <pre class="sql fragment"><code>
+INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country)
+VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>Getting a record</h4>
+
+        <pre class="sql fragment"><code>
+SELECT CustomerName, City FROM Customers;
+    </code></pre>
+
+        <pre class="sql fragment"><code>
+SELECT * FROM Customers;
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>Getting record by condition</h4>
+
+        <pre class="sql fragment"><code>
+SELECT * FROM Customers
+WHERE CustomerID=1;
+    </code></pre>
+
+        <pre class="sql fragment"><code>
+SELECT * FROM Customers
+WHERE CustomerID > 80;
+    </code></pre>
+
+        <pre class="sql fragment"><code>
+SELECT * FROM Customers
+WHERE CustomerID > 80 and CustomerId < 120;
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>Getting records with sorting</h4>
+
+        <pre class="sql fragment"><code>
+SELECT * FROM Products
+ORDER BY Price DESC;
+    </code></pre>
+
+        <pre class="sql fragment"><code>
+SELECT * FROM Products
+ORDER BY Price ASC;
+    </code></pre>
+
+        <pre class="sql fragment"><code>
+SELECT * FROM Customers
+ORDER BY Country, CustomerName;
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>Getting unique records</h4>
+
+        <pre class="sql fragment"><code>
+SELECT DISTINCT Country FROM Customers;
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>Getting additional information</h4>
+
+        <pre class="sql fragment"><code>
+SELECT COUNT(*) FROM Products;
+    </code></pre>
+
+        <pre class="sql fragment"><code>
+SELECT SUM(Quantity) FROM OrderDetails;
+    </code></pre>
+
+        <pre class="sql fragment"><code>
+SELECT AVG(Price) FROM Products;
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>Record updating</h4>
+
+        <pre class="sql fragment"><code>
+UPDATE Customers
+SET ContactName = 'Alfred Schmidt', City= 'Frankfurt'
+WHERE CustomerID = 1;
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>Deletion</h4>
+
+        <pre class="sql fragment"><code>
+DROP TABLE Shippers;
+    </code></pre>
+
+        <pre class="sql fragment"><code>
+DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
+    </code></pre>
+
+        <pre class="sql fragment"><code>
+TRUNCATE TABLE table_name;
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>JOIN</h4>
+
+        <pre class="sql fragment"><code>
+SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
+FROM Orders
+INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>JOIN</h4>
+
+        <img src="images/joins.png">
+    </section>
+
+    <section>
+        <h4>INDEX</h4>
+
+        <pre class="sql fragment"><code>
+CREATE INDEX idx_lastname
+ON Persons (LastName);
+    </code></pre>
+
+        <pre class="sql fragment"><code>
+CREATE INDEX idx_pname
+ON Persons (LastName, FirstName);
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>INDEX</h4>
+
+        <img src="images/b-tree.png">
+    </section>
+
+    <section>
+        <h4>NoSQL</h4>
+
+        <ul>
+            <li class="left fragment">Key - Value</li>
+            <li class="left fragment">Document-oriented databases</li>
+            <li class="left fragment">Graph</li>
+            <li class="left fragment">т.д.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>Key - Value</h4>
+
+        <img src="images/key-value.png">
+    </section>
+
+    <section>
+        <h4>Key - Value</h4>
+
+        <ul>
+            <li class="left fragment">Redis</li>
+            <li class="left fragment">AWS Dynamodb</li>
+            <li class="left fragment">Memcached</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>Document-oriented databases</h4>
+
+        <img src="images/document-oriented.png">
+    </section>
+
+    <section>
+        <h4>Document-oriented databases</h4>
+
+        <ul>
+            <li class="left fragment">MongoDB</li>
+            <li class="left fragment">AWS Dynamodb</li>
+            <li class="left fragment">Google Cloud Firestore</li>
+        </ul>
+    </section>
+
+
+    <section>
+        <h4>Q&A</h4>
+    </section>
+
+</div></div>
+
+<script src="../lib/js/head.min.js"></script>
+<script src="../js/reveal.js"></script>
+<script>
+    Reveal.initialize({
+        controls: false,
+        progress: true,
+        slideNumber: true,
+        history: true,
+        center: true,
+        hideAddressBar: true,
+        transition: 'slide',
+        dependencies: [
+            {
+                src: '../plugin/highlight/highlight.js',
+                async: true,
+                condition: function () {
+                    return Boolean(document.querySelector('pre code'));
+                },
+                callback: function () {
+                    hljs.initHighlightingOnLoad();
+                }
+            }
+        ]
+    });
+
+    const body = document.getElementsByClassName('yandex')[0];
+    let invert = false;
+
+    body.onkeypress = function (event) {
+        if (event.key.toLowerCase() !== 'i') return;
+
+        if (invert) body.style = '';
+        else body.style = 'filter: invert(100%)';
+
+        invert = !invert;
+    }
+</script>
+</body>
+</html>
