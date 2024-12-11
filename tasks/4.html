@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>NODEJS: TASK_4</title>
+    <title>NODE: 4</title>
     <link rel="stylesheet" href="assets/fonts.css">
     <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="assets/darcula.css">
@@ -11,83 +11,174 @@
 
 <section class="header">
     <div class="header__content">
-        <div class="header__subject">Auth</div>
-        <div class="header__id">node_4</div>
+        <div class="header__subject">Sequelize</div>
+        <div class="header__id">4</div>
     </div>
 </section>
 
 <section class="task">
     <div class="task__statement">
-        Создаем на Github репозиторий <span class="task__inline-code">node_4</span>, клонируем его, открываем в IDE
+        We create a repository <span class="task__inline-code">node_4</span> on Github, clone it, open it in IDE
     </div>
 
     <div class="task__statement">
-        Переносим в него наш предыдущий проект node_3.
+        To perform subsequent work, we will need a database. Let's choose one of the supported by the sequelize library, for example, mysql
     </div>
 
     <div class="task__statement">
-        Установим библиотеки <a class="task__link" href="https://www.npmjs.com/package/jsonwebtoken" target="_blank">jsonwebtoken</a> и <a class="task__link" href="https://www.npmjs.com/package/bcryptjs" target="_blank">bcryptjs</a>
+        Let's create the files <span class="task__inline-code">index.js</span>, <span class="task__inline-code ">package.json</span>, <span class="task__inline-code">config.json</span>, <span class="task__inline-code">models/index.js</span>, <span class="task__inline-code">models/turtle.js</span>, <span class="task__inline-code">models/weapon.js</span> and <span class="task__inline-code">models/ pizza.js</span>
+    </div>
+
+    <div class="task__statement">
+        File contents <span class="task__inline-code">index.js</span>:
+        <pre><code class="task__code javascript">const Sequelize = require('sequelize');
+
+const config = require('./config.json');
+
+const db = require('./models')(Sequelize, config);
+
+// TODO: database queries</code></pre>
+    </div>
+
+    <div class="task__statement">
+        Contents of the file <span class="task__inline-code">models/index.js</span>:
+        <pre><code class="task__code javascript">const Turtle = require('./turtle');
+const Weapon = require('./weapon');
+const Pizza = require('./pizza');
+
+module.exports = (Sequelize, config) => {
+// TODO: create an object to connect to the database - sequelize
+
+const turtles = Turtle(Sequelize, sequelize);
+const weapons = Weapon(Sequelize, sequelize);
+const pizzas = Pizza(Sequelize , sequelize);
+
+// TODO: create relationships between tables
+
+return {
+turtles,
+weapons,
+pizzas,
+
+sequelize: sequelize,
+Sequelize: Sequelize,
+};
+};</code></pre>
+    </div>
+
+    <div class="task__statement">
+        Contents of the file <span class="task__inline-code">models/turtle.js</span>:
+        <pre><code class ="task__code javascript">module.exports = (Sequelize, sequelize) => {
+return sequelize.define('turtles', {
+// TODO: field description
+});
+};</code></pre>
+    </div >
+
+    <div class="task__statement">
+        Contents of file <span class="task__inline-code">models/weapon.js</span>:
+        <pre><code class="task__code javascript">module.exports = (Sequelize, sequelize) => {
+return sequelize.define('weapons', {
+// TODO: field description
+});
+};</code></pre>
+    </div>
+
+    <div class="task__statement">
+        Contents of the file <span class="task__inline-code">models/pizza.js</span>:
+        <pre><code class ="task__code javascript">module.exports = (Sequelize, sequelize) => {
+return sequelize.define('pizzas', {
+// TODO: field description
+});
+};</code></pre>
+    </div >
+</section>
+
+<section class="task">
+    <div class="task__statement">
+        We need to replace the <span class="task__inline-code">TODO</span> comments with code based on the requirements
+    </div>
+
+    <div class="task__statement">
+        1. Ninja Turtle Model:
+        <pre><code class="task__code json">"id": int / autoincrement
+"name": string
+"color": string
+"weaponId": int
+"firstFavoritePizzaId": int
+"secondFavoritePizzaId": int</code></pre>
+    </div>
+
+    <div class="task__statement">
+        2. Weapon Model:
+        <pre><code class="task__code json">"id": int / autoincrement
+"name": string
+"dps": int</code></pre>
+    </div>
+
+    <div class="task__statement">
+        3. Pizza model:
+        <pre><code class="task__code json">"id": int / autoincrement
+"name": string
+"description": string
+"calories": double</code></pre>
+    </div>
+
+    <div class="task__statement">
+        4. Write code to synchronize models with the database.
+    </div>
+
+    <div class="task__statement">
+        5. Implement CRUD for each of the models.
+    </div>
+
+    <div class="task__statement">
+        6. Fill the tables with data. <span class="task__inline-code">Google</span> will help you find data for tables
     </div>
 </section>
 
 <section class="task">
     <div class="task__statement">
-        Добавим список для хранения пользователей (<span class="task__inline-code">manager</span>) в наше приложение
-        <pre><code class="task__code json">"id": int
-"email": string
-"password": string
-"super": boolean
-</code></pre>
+        Let's demonstrate various operations using sequelize
     </div>
+
+    <div class="task__statement">
+        1. Display all the Teenage Mutant Ninja Turtles
+    </div>
+
+    <div class="task__statement">
+        2. Display all the Teenage Mutant Ninja Turtles whose favorite pizza is <span class="task__inline-code">"Mozzarella"</span>
+    </div>
+
+    <div class="task__statement">
+        3. Display all pizzas marked as favorites without duplicates
+    </div>
+
+    <div class="task__statement">
+        4. Create a fifth turtle with your name and favorite color. Don't forget about weapons
+    </div>
+
+    <div class="task__statement">
+        5. Update all pizzas with a calorie count greater than <span class="task__inline-code">3000</span> by adding <span class="task__inline-code">"SUPER FAT!" to the description</span>
+    </div>
+
+    <div class="task__statement">
+        6. Request the number of weapons with <span class="task__inline-code">dps</span> greater than <span class="task__inline-code">100</span>
+    </div>
+
+    <div class="task__statement">
+        7. Find a pizza with <span class="task__inline-code">id</span> equal to <span class="task__inline-code">1</span>
+    </div>
+
+    <div class="task__statement">
+        8. Add the fifth turtle's favorite pizza via the turtle object
+    </div>
+
 </section>
 
 <section class="task">
     <div class="task__statement">
-        Добавим методы в API:<br><br>
-        <span class="task__inline-code">POST /api/auth/register</span> - принимает email и password и создает запись в таблице управляющих / пароль должен хранится в захэшированной форме (используем bcrypt)
-        <br><br>
-        <span class="task__inline-code">POST /api/auth/login</span> - принимает email и password и пытается аутентифицировать управляющего / в случае успеха возвращает токен созданный с помощью jwt.sign с зашитым id и email менеджера / время жизни токена 5 минут
-    </div>
-</section>
-
-<section class="task">
-    <div class="task__statement">
-        Создадим middleware который будет для всех запросов к API кроме <span class="task__inline-code">/api/auth/*</span> проверять наличие в запросе заголовка <span class="task__inline-code">Authorization</span>.
-    </div>
-
-    <div class="task__statement">
-        При отсутствии этого заголовка возвращаем ошибку 401.
-    </div>
-
-    <div class="task__statement">
-        Если заголовок присутствует, проверяем его на валидность с помощью jwt.verify.
-    </div>
-    <div class="task__statement">
-        Если токен валидный загружаем пользователя по id из токена и помещаем в <span class="task__inline-code">request.user</span>
-    </div>
-
-    <div class="task__statement">
-        Если токен не валидный или пользователь не найден возвращаем ошибку 403.
-    </div>
-
-    <div class="task__statement task__statement_note">
-        В заголовке перед токеном должно быть слово <span class="task__inline-code">Bearer</span>. Т.е. полностью заголовок вяглядит так <span class="task__inline-code">Authorization: Bearer Токен</span>
-    </div>
-
-    <section class="task">
-        <div class="task__statement">
-            Дополним существующие методы API следующим образом:
-            <br><br>
-            <span class="task__inline-code">READ операции</span> - доступны простому пользователю и суперпользователю / для остальных ошибка 403
-            <br><br>
-            <span class="task__inline-code">CREATE/UPDATE/DELETE операции</span> - доступно только суперпользователю / для остальных ошибка 403
-        </div>
-    </section>
-</section>
-
-<section class="task">
-    <div class="task__statement">
-        Синхронизируем локальный репозиторий с удаленным (сделаем push на Github)
+        Synchronize the local repository with the remote one (push to Github)
     </div>
 </section>
 
@@ -95,21 +186,21 @@
     <div class="task__statement">
         <input class="task__checkbox" type="checkbox">
         <span>
-      Сбросьте ссылочку на GitHub репозиторий.
-    </span>
+Show the commit history of your repository on Github
+</span>
     </div>
 
     <div class="task__statement">
         <input class="task__checkbox" type="checkbox">
         <span>
-      Продемонстрируйте работу сервера через Postman(сбросить скриншоты)
-    </span>
+Demonstrate how each of the task02 items works (screenshots)
+</span>
     </div>
 </section>
 
 <section class="task task_extras">
     <div class="task__statement">
-        <a class="task__link" target="_blank" href="http://expressjs.com/en/4x/api.html">Документация по Express</a>
+        <a class="task__link" target="_blank" href="http://docs.sequelizejs.com/">Sequelize Documentation</a>
     </div>
 </section>
 
