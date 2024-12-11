@@ -9,11 +9,13 @@ NODE/LECTURE/5 -  Streams. fs + path modules{live coding}
 [NODE/LECTURE/6 -  Asynchronous programming. Promises](https://zemla4ok.github.io/nodejs/06)  
 [NODE/LECTURE/7 -  Express.js](https://zemla4ok.github.io/nodejs/07)  
 [NODE/LECTURE/8 -  Databases. SQL, NoSQL.](https://zemla4ok.github.io/nodejs/08)  
+NODE/LECTURE/9 -  Sequelize{live coding}
 
 #### Задания
 
 
 [NODE/TASK/1 - npm](https://zemla4ok.github.io/nodejs/tasks/1.html) # (After lecture 2)  
 [NODE/TASK/2 - http](https://zemla4ok.github.io/nodejs/tasks/2.html) # (After lecture 4)  
-[NODE/TASK/2 - http](https://zemla4ok.github.io/nodejs/tasks/3.html) # (After lecture 7)  
+[NODE/TASK/2 - express](https://zemla4ok.github.io/nodejs/tasks/3.html) # (After lecture 7)  
+[NODE/TASK/2 - sequelize](https://zemla4ok.github.io/nodejs/tasks/4.html) # (After lecture 9)  
 
