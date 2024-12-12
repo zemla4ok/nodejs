@@ -1,0 +1,874 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>10</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="../css/reveal.css">
+    <link rel="stylesheet" href="../css/theme/yandex.css" id="theme">
+    <link rel="stylesheet" href="../lib/css/zenburn.css">
+    <link rel="stylesheet" href="../css/user.css">
+</head>
+<body class="yandex nodejs"><div class="reveal"><div class="slides">
+
+    <section class="large">
+        <h2>Node.js</h2>
+        <p class="author">
+            <small>Lecture 10</small>
+        </p>
+    </section>
+
+    <section>
+        <h4>Auth</h4>
+    </section>
+
+    <section>
+        <h4>What is it?</h4>
+
+        <img src="images/steps.png">
+    </section>
+
+    <section>
+        <h4>Authentication</h4>
+
+        <ul>
+            <li class="left fragment">check that the user is who they say they are</li>
+            <li class="left fragment">login - who they say they are</li>
+            <li class="left fragment">password, code from SMS, token from letter, ... - confirmation</li>
+        </ul>
+    </section>
+
+    <section>
+        <h3><span class="red">S</span>ingle factor authentication</h3>
+    </section>
+
+    <section>
+        <h4>Factors</h4>
+
+        <ul>
+            <li class="left fragment">knowledge factor (password)</li>
+            <li class="left fragment">possession factor (phone, smart card, key fob)</li>
+            <li class="left fragment">property factor (biometrics)</li>
+        </ul>
+    </section>
+
+    <section>
+        <div class="left">
+            1. The client requests authentication by sending login + password
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            2. The server searches for the user by login in the database
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            2.1 If it does not find it, it returns error 401
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            3. The server compares the hash of the sent password with the one received from the database
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            3.1 If they do not match, it returns error 401
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            4. The server creates a token
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            5. The server gives the token to the client
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            5.1 cookie
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            5.2 body
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            5.3 cookie+body
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            6. The client saves the token
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            6.1 browser - cookies / localStorage
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            7. The client attaches a token to each request
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            7.1 cookie / attached by the browser
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            7.2 header / Authorization: Bearer token (came from OAuth 2.0)
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            7.3 body is not used because <span class="fragment"> GET has no body</span>
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            8. Server checks token
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            9. Authorization
+        </div>
+    </section>
+
+    <section>
+        <h4>Cookies vs Headers</h4>
+
+        <ul>
+            <li class="left fragment">cookies are easier to maintain</li>
+            <li class="left fragment">cookies can be protected from access from JS</li>
+            <li class="left fragment">cookies cannot be transferred between domains</li>
+            <li class="left fragment">cookies only hold 4Kb</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>Nuances</h4>
+
+        <ul>
+            <li class="left fragment">returned errors - security / UX</li>
+            <li class="left fragment">useful: return additional information - name, login, token expiration date</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>Nuances</h4>
+
+        <ul>
+            <li class="left fragment">possible: extend token after successful request</li>
+            <li class="left fragment">combination of http-only cookie and token in header (protection from JS) - guid in token, hash from guid in cookie</li>
+        </ul>
+    </section>
+
+    <section>
+        <h3><span class="red">T</span>wo factor authentication</h3>
+    </section>
+
+    <section>
+        <div class="left">
+            1. The client requests authentication by sending login + password
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            2. The server searches for the user by login in the database
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            2.1 If it does not find it, it returns error 401
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            3. The server compares the hash of the sent password with the one received from the database
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            3.1 If they do not match, it returns error 401
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            4. The server creates a partial short-lived token
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            5. The server returns a partial token and requests the second factor
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            5.1 SMS / push notification / call / ...
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            6. The client sends the second factor and token to the server
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            7. The server checks the token and the second factor
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            7.1 If incorrect, returns error 401
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            8. The server creates a full token
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            9. The server sends the token to the client
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            10. The client saves the token
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            11. The client attaches a token to each request
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            12. The server checks the token
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            12.1 statefull-server - loads the session into the request
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            12.2 stateless-server - checks the signature, <span class="fragment">loads the user into the request</span>
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            13. Authorization
+        </div>
+    </section>
+
+    <section>
+        <h3><span class="red">S</span>ingle sign-on</h3>
+    </section>
+
+    <section>
+        <h4>SSO</h4>
+
+        <ul>
+            <li class="left fragment">single sign-on technology</li>
+            <li class="left fragment">different applications are authorized through one special</li>
+            <li class="left fragment">on the web - applications on different domains separate the user (habrahabr, microsoft, google)</li>
+        </ul>
+    </section>
+
+    <section>
+        <div class="left">
+            1. The habrahabr.ru application requires authentication
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            1.1 Redirect to the id.tmtm.ru application
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            2. Authentication
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            2.1 Single-factor, two-factor, ...
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            2.2 The server sets a cookie with a token for id.tmtm.ru for repeated requests
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            3. Redirect to the habrahabr.ru application with the token passed in the query string
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            3.1 Saving in cookies / localStorage
+        </div>
+    </section>
+
+    <section>
+        <h3><span class="red">O</span>Auth</h3>
+    </section>
+
+    <section>
+        <h4>OAuth</h4>
+
+        <ul>
+            <li class="left fragment">open protocol, current OAuth 2.0</li>
+            <li class="left fragment">authentication via a single provider for unrelated applications</li>
+            <li class="left fragment">the user does not need to disclose login/password to the application</li>
+            <li class="left fragment">the provider can also provide access to user information</li>
+            <li class="left fragment">access to information can be differentiated</li>
+        </ul>
+    </section>
+
+    <section>
+        <div class="left">
+            1. Client requests authentication
+        </div>
+
+        <br>
+
+        <div class="left fragment">
+            1.1 Redirect to provider
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            2. Client authenticates with provider
+        </div>
+    </section>
+
+    <section>
+        <div class="left">
+            3. Redirect to application with token passed in query string
+        </div>
+    </section>
+    <section>
+        <h4>OAuth vs SSO</h4>
+
+        <ul>
+            <li class="left fragment">applications cannot have direct access to user data</li>
+            <li class="left fragment">separation of access to user data</li>
+            <li class="left fragment">token validity can be confirmed by the provider</li>
+            <li class="left fragment">the application can independently update the token at the provider</li>
+        </ul>
+    </section>
+
+    <section>
+        <h3><span class="red">H</span>ashing</h3>
+    </section>
+
+    <section>
+        <h4>Hashing</h4>
+
+        <ul>
+            <li class="left fragment">converting a string of arbitrary length to a string of fixed length</li>
+            <li class="left fragment">speed</li>
+            <li class="left fragment">collisions</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>Password Hashing</h4>
+
+        <ul>
+            <li class="left fragment">no MD5 / SHA1 / SHA256</li>
+            <li class="left fragment">only mathematically slow hash algorithms - PBKDF2, bcrypt</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>bcrypt</h4>
+
+        <pre class="bash"><code>
+npm install bcryptjs
+    </code></pre>
+
+        <pre class="javascript fragment"><code>
+bcrypt.hash('password', 12, (err, hash) => {
+  // process result
+});
+    </code></pre>
+
+        <pre class="javascript fragment"><code>
+bcrypt.compare('password', hash, (err, result) => {
+  // check result
+});
+    </code></pre>
+    </section>
+
+    <section>
+        <h3><span class="red">J</span>WT</h3>
+    </section>
+
+    <section>
+        <h4>JWT</h4>
+
+        <ul>
+            <li class="left fragment">JSON Web Tokens</li>
+            <li class="left fragment">open standard</li>
+            <li class="left fragment">defines the token format</li>
+            <li class="left fragment"><a target="_blank" href="https://jwt.io/">official website</a></li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>JWT - Format</h4>
+
+        <div><span class="fragment">header</span><span class="fragment">.data</span><span class="fragment">.signature</span></div>
+    </section>
+
+    <section>
+        <h4>JWT - Header</h4>
+
+        <ul>
+            <li class="left fragment">algorithm</li>
+            <li class="left fragment">token type (JWT)</li>
+            <li class="left fragment">base64 format</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>JWT - Data</h4>
+
+        <ul>
+            <li class="left fragment">payload</li>
+            <li class="left fragment">base64 format</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>JWT - Signature</h4>
+
+        <ul>
+            <li class="left fragment">cryptographic hash</li>
+            <li class="left fragment">algorithm(base64(header) + '.' + base64(data), key)</li>
+            <li class="left fragment">base64 format</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>JWT - Tokens</h4>
+
+        <ul>
+            <li class="left fragment">access_token</li>
+            <li class="left fragment">sometimes refresh_token</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>JWT - Refresh token</h4>
+
+        <ul>
+            <li class="left fragment">used when access_token expired</li>
+            <li class="left fragment">sent to special url</li>
+            <li class="left fragment">returns access_token + refresh_token</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>JWT - Refresh token</h4>
+
+        <ul>
+            <li class="left fragment">if access_token is stolen, it can be used for a limited time</li>
+            <li class="left fragment">if refresh_token is stolen, it becomes useless upon re-login</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>JWT - Node.js</h4>
+
+        <pre class="javascript"><code>
+npm install jsonwebtoken
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>JWT - Node.js</h4>
+
+        <pre class="javascript"><code>
+jwt.sign(payload, secretOrPrivateKey, options,
+  [callback])
+
+/*
+  payload - string/object/buffer
+  secretOrPrivateKey - string/buffer
+  callback - function
+  options - object
+    algorithms - array of alorithms
+    expiresIn - 60, "2 days", "10h", "7d"
+      -> https://github.com/zeit/ms
+*/
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>JWT - Node.js</h4>
+
+        <pre class="javascript"><code>
+jwt.verify(token, secretOrPublicKey,
+  [options, callback])
+/*
+  token - string
+  secretOrPrivateKey - string/buffer
+  callback - function
+  options - object
+    ignoreExpiration - true/false
+*/
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>JWT - Node.js</h4>
+
+        <pre class="javascript"><code>
+const jwt = require('jsonwebtoken');
+
+const token = jwt.sign({ id: 42 },
+  config['jwt-secret'],
+  { expiresIn: config['jwt-expires'] });
+
+jwt.verify(token, config['jwt-secret'],
+  (err, payload) => {
+      console.log(payload.id); // 42
+  });
+
+    </code></pre>
+    </section>
+
+    <section>
+        <h3><span class="red">P</span>assport.js</h3>
+    </section>
+
+    <section>
+        <h4>Passport.js</h4>
+
+        <ul>
+            <li class="left fragment">500+ authentication strategies</li>
+            <li class="left fragment">OAuth</li>
+            <li class="left fragment">easy handling of successful and unsuccessful attempts</li>
+            <li class="left fragment">persistent sessions</li>
+            <li class="left fragment">dynamic rights system</li>
+            <li class="left fragment">you can develop your own strategies</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>Passport.js</h4>
+
+        <pre class="javascript"><code>
+npm install passport
+        </code></pre>
+    </section>
+
+    <section>
+        <h4>Passport.js</h4>
+
+        <pre class="javascript"><code>
+app.post('/login',
+  passport.authenticate('local'),
+  function(req, res) {
+    // If this function gets called,
+    // authentication was successful.
+    // `req.user` contains the authenticated user
+    res.redirect('/users/' + req.user.username);
+  });
+        </code></pre>
+    </section>
+
+    <section>
+        <h4>Passport.js</h4>
+
+        <pre class="javascript"><code>
+const authRoutes = {
+  successRedirect: '/',
+  failureRedirect: '/login'
+};
+
+app.post('/login',
+  passport.authenticate('local', authRoutes));
+        </code></pre>
+    </section>
+
+    <section>
+        <h4>Passport.js</h4>
+
+        <pre class="javascript"><code>
+app.get('/login', function(req, res, next) {
+  passport.authenticate('local',
+    (err, user, info) => {
+      ...
+    })(req, res, next);
+});
+        </code></pre>
+    </section>
+
+    <section>
+        <h4>Passport.js</h4>
+
+        <pre class="javascript"><code>
+npm install passport-facebook
+npm install passport-twitter
+npm install passport-google-oauth
+npm install passport-vkontakte
+npm install passport-github2
+        </code></pre>
+    </section>
+
+    <section>
+        <h4>Authorization</h4>
+
+        <ul>
+            <li class="left fragment">providing access to a specific resource/action</li>
+            <li class="left fragment">based on some attributes (flags, roles, privileges, ...)</li>
+        </ul>
+    </section>
+    <section>
+        <h4>Types</h4>
+
+        <ul>
+            <li class="left fragment">discretionary access control (DAC)</li>
+            <li class="left fragment">user user_1 is allowed to read file_1</li>
+            <li class="left fragment">user user_2 is allowed to read and write to file_1</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>Types</h4>
+
+        <ul>
+            <li class="left fragment">mandatory access control (MAC)</li>
+            <li class="left fragment">separation users by access levels</li>
+            <li class="left fragment">user with access level L1 is allowed to read file file_1</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>Types</h4>
+
+        <ul>
+            <li class="left fragment">role-based access control (RBAC)</li>
+            <li class="left fragment">user with role_1 is allowed to read file file_1</li>
+            <li class="left fragment">most commonly used in web applications</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>Implementation options</h4>
+
+        <ul>
+            <li class="left fragment">flag (isAdmin)</li>
+            <li class="left fragment">roles (one, multiple)</li>
+            <li class="left fragment">roles + privileges</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>Auth service</h4>
+
+        <pre class="javascript"><code>
+const permissions = {
+  '/posts/create': 'user',
+  ...
+};
+
+class AuthorizationService {
+  async checkPermissions(user, route) {
+    if (!permissions[route]) {
+      return;
+    }
+
+    if(!user) {
+      throw this.errors.accessDenied;
+    }
+    ...
+  }
+}
+   </code></pre>
+    </section>
+
+    <section>
+        <h4>Flag</h4>
+
+        <pre class="javascript"><code>
+async checkPermissions(user, route) {
+  ...
+
+  const role = user.isAdmin ? 'admin' : 'user';
+
+  if (permissions[route] !== role) {
+      throw this.errors.accessDenied;
+  }
+}
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>Roles</h4>
+
+        <pre class="javascript"><code>
+async checkPermissions(user, route) {
+  ...
+
+  const role = await this.rolesRepository
+    .findOne({
+      where: {
+        name: permissions[route]
+      }
+    });
+
+  const hasRole = await user.hasRole(role);
+
+  if (!hasRole) {
+    throw this.errors.accessDenied;
+  }
+}
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>Roles + privilege</h4>
+
+        <pre class="javascript"><code>
+const permissions = {
+  '/posts/create': [{
+      resource: 'post',
+      action: 'create'
+  }],
+  ...
+};
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>Roles + privilege</h4>
+
+        <pre class="javascript"><code>
+async checkPermissions(user, route) {
+  ...
+
+  if (!user.can(permissions[route])) {
+    throw this.errors.accessDenied;
+  }
+}
+    </code></pre>
+    </section>
+
+    <section>
+        <h4>Middleware of auth</h4>
+
+        <pre class="javascript"><code>
+const shouldHave = permissions =>
+  async (req, res, next) => {
+    await authorizationService
+      .checkPermissions(req.user, permissions);
+
+    next();
+  };
+    </code></pre>
+    </section>
+
+    <section>
+        <h3>Q&A</h3>
+    </section>
+
+</div></div>
+
+<script src="../lib/js/head.min.js"></script>
+<script src="../js/reveal.js"></script>
+<script>
+    Reveal.initialize({
+        controls: false,
+        progress: true,
+        slideNumber: true,
+        history: true,
+        center: true,
+        hideAddressBar: true,
+        transition: 'slide',
+        dependencies: [
+            {
+                src: '../plugin/highlight/highlight.js',
+                async: true,
+                condition: function () {
+                    return Boolean(document.querySelector('pre code'));
+                },
+                callback: function () {
+                    hljs.initHighlightingOnLoad();
+                }
+            }
+        ]
+    });
+
+    const body = document.getElementsByClassName('yandex')[0];
+    let invert = false;
+
+    body.onkeypress = function (event) {
+        if (event.key.toLowerCase() !== 'i') return;
+
+        if (invert) body.style = '';
+        else body.style = 'filter: invert(100%)';
+
+        invert = !invert;
+    }
+</script>
+</body>
+</html>
