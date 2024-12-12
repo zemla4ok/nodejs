@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>NODE: 5</title>
+    <title>NODEJS: TASK_5</title>
     <link rel="stylesheet" href="assets/fonts.css">
     <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="assets/darcula.css">
@@ -11,174 +11,93 @@
 
 <section class="header">
     <div class="header__content">
-        <div class="header__subject">Sequelize</div>
-        <div class="header__id">5</div>
+        <div class="header__subject">Auth</div>
+        <div class="header__id">node_5</div>
     </div>
 </section>
 
 <section class="task">
     <div class="task__statement">
-        Создаем на Github репозиторий <span class="task__inline-code">node_5</span>, клонируем его, открываем в IDE
+        Create a repository on Github <span class="task__inline-code">node_4</span>, clone it, open it in IDE
     </div>
 
     <div class="task__statement">
-        Для выполнения последующих работ нам понадобиться база данных. Выберем одну из поддерживаемых библиотекой sequelize, например, mysql
+        We transfer our previous project node_3 into it.
     </div>
 
     <div class="task__statement">
-        Создадим файлы <span class="task__inline-code">index.js</span>, <span class="task__inline-code">package.json</span>, <span class="task__inline-code">config.json</span>, <span class="task__inline-code">models/index.js</span>, <span class="task__inline-code">models/turtle.js</span>, <span class="task__inline-code">models/weapon.js</span> и <span class="task__inline-code">models/pizza.js</span>
-    </div>
-
-    <div class="task__statement">
-        Содержимое файла <span class="task__inline-code">index.js</span>:
-        <pre><code class="task__code javascript">const Sequelize = require('sequelize');
-
-const config = require('./config.json');
-
-const db = require('./models')(Sequelize, config);
-
-// TODO: запросы к БД</code></pre>
-    </div>
-
-    <div class="task__statement">
-        Содержимое файла <span class="task__inline-code">models/index.js</span>:
-        <pre><code class="task__code javascript">const Turtle = require('./turtle');
-const Weapon = require('./weapon');
-const Pizza = require('./pizza');
-
-module.exports = (Sequelize, config) => {
-  // TODO: создание объекта для подключения к базе - sequelize
-
-  const turtles = Turtle(Sequelize, sequelize);
-  const weapons = Weapon(Sequelize, sequelize);
-  const pizzas = Pizza(Sequelize, sequelize);
-
-  // TODO: создание связей между таблицами
-
-  return {
-    turtles,
-    weapons,
-    pizzas,
-
-    sequelize: sequelize,
-    Sequelize: Sequelize,
-  };
-};</code></pre>
-    </div>
-
-    <div class="task__statement">
-        Содержимое файла <span class="task__inline-code">models/turtle.js</span>:
-        <pre><code class="task__code javascript">module.exports = (Sequelize, sequelize) => {
-  return sequelize.define('turtles', {
-    // TODO: описание полей
-  });
-};</code></pre>
-    </div>
-
-    <div class="task__statement">
-        Содержимое файла <span class="task__inline-code">models/weapon.js</span>:
-        <pre><code class="task__code javascript">module.exports = (Sequelize, sequelize) => {
-  return sequelize.define('weapons', {
-    // TODO: описание полей
-  });
-};</code></pre>
-    </div>
-
-    <div class="task__statement">
-        Содержимое файла <span class="task__inline-code">models/pizza.js</span>:
-        <pre><code class="task__code javascript">module.exports = (Sequelize, sequelize) => {
-  return sequelize.define('pizzas', {
-    // TODO: описание полей
-  });
-};</code></pre>
+        Let's install the libraries <a class="task__link" href="https://www.npmjs.com/package/jsonwebtoken"
+                                       target="_blank">jsonwebtoken</a> and <a class="task__link"
+                                                                               href="https://www.npmjs.com/package/bcryptjs"
+                                                                               target="_blank">bcryptjs</a>
     </div>
 </section>
 
 <section class="task">
     <div class="task__statement">
-        Нам необходимо заменить <span class="task__inline-code">TODO</span> комментарии кодом, исходя из требований
-    </div>
-
-    <div class="task__statement">
-        1. Модель черепашки-ниндзя:
-        <pre><code class="task__code json">"id": int / autoincrement
-"name": string
-"color": string
-"weaponId": int
-"firstFavoritePizzaId": int
-"secondFavoritePizzaId": int</code></pre>
-    </div>
-
-    <div class="task__statement">
-        2. Модель оружия:
-        <pre><code class="task__code json">"id": int / autoincrement
-"name": string
-"dps": int</code></pre>
-    </div>
-
-    <div class="task__statement">
-        3. Модель пиццы:
-        <pre><code class="task__code json">"id": int / autoincrement
-"name": string
-"description": string
-"calories": double</code></pre>
-    </div>
-
-    <div class="task__statement">
-        4. Напишем код для синхронизации моделей с БД.
-    </div>
-
-    <div class="task__statement">
-        5. Реализуем CRUD для каждой из моделей.
-    </div>
-
-    <div class="task__statement">
-        6. Наполним таблицы данными. Данные для таблиц поможет найти <span class="task__inline-code">Google</span>
+        Let's add a list for storing users (<span class="task__inline-code">manager</span>) to our application
+        <pre><code class="task__code json">"id": int
+"email": string
+"password": string
+"super": boolean
+</code></pre>
     </div>
 </section>
 
 <section class="task">
     <div class="task__statement">
-        Продемонстрируем различные операции с помощью sequelize
+        Add methods to the API:<br><br>
+        <span class="task__inline-code">POST /api/auth/register</span> - accepts email and password and creates a record
+        in the table managers / password must be stored in hashed form (use bcrypt)
+        <br><br>
+        <span class="task__inline-code">POST /api/auth/login</span> - accepts email and password and attempts to
+        authenticate the manager / in if successful, returns a token created using jwt.sign with the manager's id and
+        email embedded / token lifetime is 5 minutes
     </div>
-
-    <div class="task__statement">
-        1. Выведем всех черепашек-ниндзя
-    </div>
-
-    <div class="task__statement">
-        2. Выведем всех черепашек-ниндзя у кого любимая пицца <span class="task__inline-code">"Mozzarella"</span>
-    </div>
-
-    <div class="task__statement">
-        3. Выведем все пиццы отмеченные как любимые без повторов
-    </div>
-
-    <div class="task__statement">
-        4. Создадим пятую черепашку с вашим именем и любимым цветом. Незабываем про оружие
-    </div>
-
-    <div class="task__statement">
-        5. Обновим все пиццы с количеством калорий больше <span class="task__inline-code">3000</span> добавив к описанию <span class="task__inline-code">"SUPER FAT!"</span>
-    </div>
-
-    <div class="task__statement">
-        6. Запросим число оружий с <span class="task__inline-code">dps</span> больше <span class="task__inline-code">100</span>
-    </div>
-
-    <div class="task__statement">
-        7. Найдем пиццу с <span class="task__inline-code">id</span> равным <span class="task__inline-code">1</span>
-    </div>
-
-    <div class="task__statement">
-        8. Добавим пятой черепашке любимую пиццу через объект черепахи
-    </div>
-
 </section>
 
 <section class="task">
     <div class="task__statement">
-        Синхронизируем локальный репозиторий с удаленным (сделаем push на Github)
+        Let's create middleware that will for all API requests except <span class="task__inline-code">/api/auth/*</span>
+        check for the presence of the header in the request <span class="task__inline-code">Authorization</span>.
+    </div>
+
+    <div class="task__statement">
+        If this header is missing, return error 401.
+    </div>
+
+    <div class="task__statement">
+        If the header is present, we check its validity using jwt.verify.
+    </div>
+    <div class="task__statement">
+        If the token is valid, we load the user by id from the token and place it in <span class="task__inline-code">request.user</span>
+    </div>
+
+    <div class="task__statement">
+        If the token is not valid or the user is not found, return error 403.
+    </div>
+
+    <div class="task__statement task__statement_note">
+        The title must contain the word <span class=" task__inline-code">Bearer</span>. That is, the full title looks
+        like this <span class="task__inline-code">Authorization: Bearer Token</span>
+    </div>
+
+    <section class="task">
+        <div class="task__statement">
+            Let's supplement the existing API methods as follows:
+            <br><br>
+            <span class="task__inline-code">READ operations</span> - available to a simple user and superuser / for
+            others, error 403
+            <br><br>
+            <span class="task__inline-code">CREATE/ UPDATE/DELETE operations</span> - only available to superuser / for
+            others, error 403
+        </div>
+    </section>
+</section>
+
+<section class="task">
+    <div class="task__statement">
+        Synchronize the local repository with the remote one (let's push to Github)
     </div>
 </section>
 
@@ -186,21 +105,21 @@ module.exports = (Sequelize, config) => {
     <div class="task__statement">
         <input class="task__checkbox" type="checkbox">
         <span>
-      Покажите историю коммитов своего репозитория на Github
-    </span>
+Drop a link to the GitHub repository.
+</span>
     </div>
 
     <div class="task__statement">
         <input class="task__checkbox" type="checkbox">
         <span>
-      Продемонстрируйте работу каждого из пунктов task02(скриншоты)
-    </span>
+Demonstrate server operation via Postman (drop screenshots)
+</span>
     </div>
 </section>
 
 <section class="task task_extras">
     <div class="task__statement">
-        <a class="task__link" target="_blank" href="http://docs.sequelizejs.com/">Документация по Sequelize</a>
+        <a class="task__link" target="_blank" href="http://expressjs.com/en/4x/api.html ">Express Documentation</a>
     </div>
 </section>
 
